@@ -1,62 +1,14 @@
 import React from "react";
-import styled from "styled-components";
-
-const MarqueeStyled = styled.div`
-  width: 100vw;
-  min-height: 40vh;
-  overflow: hidden;
-  box-sizing: border-box;
-`;
-
-const MarqueeListStyled = styled.div`
-  display: flex;
-  &:hover {
-    animation-play-state: paused;
-  }
-`;
-
-const MarqueeListItemStyled = styled.span`
-  width: 25vw;
-  text-rendering: geometricPrecision;
-`;
-
-const GenericItemStyled = styled.div`
-  display: block;
-  transition: ${MarqueeStyled} 2s ease-out;
-  background: #222;
-  /* padding: 16px 24px; */
-  /* padding-left: 64px; */
-  box-shadow: inset 0 -2px 0 rgba(39, 38, 58, 0.84),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(4px);
-  border-radius: 40px;
-  font-size: 16px;
-  line-height: 24px;
-  white-space: nowrap;
-  position: relative;
-  color: #fff;
-  margin: 0 16px;
-  flex-shrink: 0;
-  justify-content: space-between;
-  /* align-items: center; */
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const GenericItemIconStyled = styled.span`
-  width: 24px;
-  height: 24px;
-  left: 24px;
-  position: relative;
-`;
-
-const IconStyled = styled.div`
-  width: 24px;
-  height: 24px;
-  background: #fff;
-  border-radius: 12px;
-`;
+import {
+  MarqueeStyled,
+  MarqueeListStyled,
+  MarqueeListItemStyled,
+  GenericItemStyled,
+  GenericItemIconStyled,
+  IconStyled,
+  MarqueeListProps,
+  animations,
+} from "./styled";
 
 function GenericItem() {
   return (
@@ -77,18 +29,14 @@ function MarqueeListItem({ children }: MarqueeListItemProps) {
   return <MarqueeListItemStyled>{children}</MarqueeListItemStyled>;
 }
 
-export function MarqueeList() {
+export function MarqueeList({ animation, duration }: MarqueeListProps) {
   return (
-    <MarqueeListStyled>
-      <MarqueeListItem>
-        <GenericItem />
-      </MarqueeListItem>
-      <MarqueeListItem>
-        <GenericItem />
-      </MarqueeListItem>
-      <MarqueeListItem>
-        <GenericItem />
-      </MarqueeListItem>
+    <MarqueeListStyled animation={animation} duration={duration}>
+      {Array.from(new Array(14)).map((_: undefined, index: number) => (
+        <MarqueeListItem key={`marquee-list--item-${index}`}>
+          <GenericItem />
+        </MarqueeListItem>
+      ))}
     </MarqueeListStyled>
   );
 }
@@ -96,9 +44,9 @@ export function MarqueeList() {
 export function Marquee() {
   return (
     <MarqueeStyled>
-      <MarqueeList />
-      <MarqueeList />
-      <MarqueeList />
+      <MarqueeList animation={animations.Marquee} duration="42s" />
+      <MarqueeList animation={animations.MarqueeTwo} duration="34s" />
+      <MarqueeList animation={animations.Marquee} duration="28s" />
     </MarqueeStyled>
   );
 }

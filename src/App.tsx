@@ -1,6 +1,4 @@
-import "./styles.css";
-
-import { Marquee } from "./components/Marquee/Marquee";
+import { Marquee } from "./components/Marquee";
 
 export default function App() {
   return (

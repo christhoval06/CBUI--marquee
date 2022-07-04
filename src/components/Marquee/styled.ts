@@ -1,4 +1,6 @@
-import styled, { keyframes, Keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+import { device, deviceMax, deviceMin } from "./config";
 
 const MarqueeKeyframes = keyframes`
 0% {
@@ -23,36 +25,123 @@ const MarqueeTwoKeyframes = keyframes`
 	}
 `;
 
-export const animations = {
-  Marquee: MarqueeKeyframes,
-  MarqueeTwo: MarqueeTwoKeyframes,
-};
+const MarqueeSMKeyframes = keyframes`
+0% {
+  transform: translateX(0);
+  width: 100vw;
+}
+100% {
+  transform: translateX(-200vw);
+  width: 300vw;
+}
+`;
+
+const MarqueeTwoSMKeyframes = keyframes`
+0% {
+		transform: translateX(-200vw);
+		width: 100vw
+	}
+
+	100% {
+		transform: translateX(0);
+		width: 300vw
+	}
+`;
+
+export const MarqueeStyled = styled.div`
+  min-height: 40vh;
+  width: 100vw;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  @media ${device.laptop} {
+    width: 100%;
+  }
+`;
 
 // Pick<MarqueeListProps, 'duration' | 'animation'>
 
 export interface MarqueeListProps {
   duration: string;
-  animation: Keyframes;
 }
 
 export const MarqueeListStyled = styled.div<MarqueeListProps>`
   display: flex;
-  animation: ${(p) => p.animation} ${(p) => p.duration} linear infinite;
-  &:hover {
-    animation-play-state: paused;
-  }
+
   &:nth-child(even) {
+    animation: ${MarqueeKeyframes} ${(p) => p.duration} linear infinite;
+    &:hover {
+      animation-play-state: paused;
+    }
   }
+
   &:nth-child(odd) {
+    animation: ${MarqueeTwoKeyframes} ${(p) => p.duration} linear infinite;
+    &:hover {
+      animation-play-state: paused;
+    }
   }
+
   &:not(:first-child) {
     margin-top: 30px;
+  }
+
+  @media ${device.laptop} {
+    width: 200%;
+  }
+
+  @media ${deviceMin.mobileXS} and ${deviceMax.mobileL} {
+    &:nth-child(even) {
+      animation: ${MarqueeSMKeyframes} ${(p) => p.duration} linear infinite;
+      &:hover {
+        animation-play-state: paused;
+      }
+    }
+
+    &:nth-child(odd) {
+      animation: ${MarqueeTwoSMKeyframes} ${(p) => p.duration} linear infinite;
+      &:hover {
+        animation-play-state: paused;
+      }
+    }
   }
 `;
 
 export const MarqueeListItemStyled = styled.span`
   width: 25vw;
   text-rendering: geometricPrecision;
+
+  @media ${device.laptopL} {
+    width: 20vw;
+  }
+
+  @media ${device.laptop} {
+    width: 25vw;
+  }
+
+  @media ${device.tablet} {
+    width: 33vw;
+  }
+
+  @media ${device.tabletS} {
+    width: 50vw;
+  }
+
+  @media ${device.mobileL} {
+    width: 64vw;
+  }
+
+  @media ${device.mobileM} {
+    width: 70vw;
+  }
+
+  @media ${device.mobileS} {
+    width: 80vw;
+  }
+
+  @media ${device.mobileXS} {
+    width: 90vw;
+  }
 `;
 
 export const GenericItemStyled = styled.div`
@@ -75,36 +164,6 @@ export const GenericItemStyled = styled.div`
   align-items: center;
   &:hover {
     cursor: pointer;
-  }
-`;
-
-export const MarqueeStyled = styled.div`
-  width: 100vw;
-  min-height: 40vh;
-  overflow: hidden;
-  box-sizing: border-box;
-
-  @media (max-width: 768px) {
-  }
-
-  @media screen and (max-width: 541px) {
-  }
-
-  @media screen and (max-width: 450px) {
-  }
-
-  @media screen and (max-width: 375px) {
-  }
-
-  @media screen and (max-width: 320px) {
-  }
-
-  @media screen and (max-width: 280px) {
-  }
-
-  @media screen and (min-width: 769px) and (max-width: 900px) {
-  }
-  @media screen and (min-width: 900px) and (max-width: 1200px) {
   }
 `;
 

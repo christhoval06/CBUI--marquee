@@ -6,17 +6,19 @@ import {
   GenericItemStyled,
   GenericItemIconStyled,
   IconStyled,
-  MarqueeListProps,
-  animations,
+  MarqueeListProps as IMarqueeListProps,
 } from "./styled";
 
-function GenericItem() {
+export interface GenericItemProps {
+  icon?: React.ReactNode;
+  label: string;
+}
+
+export function GenericItem({ label, icon }: GenericItemProps) {
   return (
     <GenericItemStyled>
-      <GenericItemIconStyled>
-        <IconStyled />
-      </GenericItemIconStyled>
-      Generic Item
+      <GenericItemIconStyled>{icon ?? <IconStyled />}</GenericItemIconStyled>
+      {label}
     </GenericItemStyled>
   );
 }
@@ -29,24 +31,49 @@ function MarqueeListItem({ children }: MarqueeListItemProps) {
   return <MarqueeListItemStyled>{children}</MarqueeListItemStyled>;
 }
 
-export function MarqueeList({ animation, duration }: MarqueeListProps) {
+interface MarqueeListProps<T> extends IMarqueeListProps {
+  items: Array<T>;
+  renderItem: (item: T) => React.ReactNode;
+}
+
+export function MarqueeList<T>({
+  duration,
+  items,
+  renderItem,
+}: MarqueeListProps<T>) {
+  if (items.length > 12) {
+    throw new Error('items must be 12 items');
+  }
   return (
-    <MarqueeListStyled animation={animation} duration={duration}>
-      {Array.from(new Array(14)).map((_: undefined, index: number) => (
+    <MarqueeListStyled duration={duration}>
+      {items.map((item: T, index: number) => (
         <MarqueeListItem key={`marquee-list--item-${index}`}>
-          <GenericItem />
+          {renderItem(item)}
         </MarqueeListItem>
       ))}
     </MarqueeListStyled>
   );
 }
 
-export function Marquee() {
+export interface IMarquee<T> {
+  duration: string;
+  items: Array<T>;
+}
+interface MarqueeProps<T> {
+  data: Array<IMarquee<T>>;
+  renderItem: (item: T) => React.ReactNode;
+}
+export function Marquee<T>({ data, renderItem }: MarqueeProps<T>) {
   return (
     <MarqueeStyled>
-      <MarqueeList animation={animations.Marquee} duration="42s" />
-      <MarqueeList animation={animations.MarqueeTwo} duration="34s" />
-      <MarqueeList animation={animations.Marquee} duration="28s" />
+      {data.map(({ duration, items }: IMarquee<T>, index: number) => (
+        <MarqueeList
+          key={`marquee--list--${index}`}
+          duration={duration}
+          items={items}
+          renderItem={renderItem}
+        />
+      ))}
     </MarqueeStyled>
   );
 }

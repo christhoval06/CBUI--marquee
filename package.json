@@ -1,7 +1,7 @@
 {
   "name": "mui-marquee",
   "version": "1.0.0",
-  "description": "",
+  "description": "Marquee is a special effect that is used to move or scroll the content horizontally across and vertically down in our HTML web pages.",
   "keywords": [],
   "main": "src/index.tsx",
   "dependencies": {
